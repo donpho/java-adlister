@@ -8,6 +8,17 @@ import java.io.IOException;
 @WebServlet(name = "ViewProfileServlet", urlPatterns = "/profile")
 public class ViewProfileServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/profile.jsp").forward(request, response);
+        try{
+            if (request.getSession().getAttribute("isAdmin").equals(false)) {
+                response.sendRedirect("/webapp/login");
+                return;
+            }
+            request.getRequestDispatcher("/WEB-INF/profile.jsp").forward(request, response);
+        }catch (NullPointerException e){
+            response.sendRedirect("/login");
+        }
+
     }
+
+
 }
